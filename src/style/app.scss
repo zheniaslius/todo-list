@@ -1,0 +1,29 @@
+.todos-container {
+  display: flex;
+}
+
+.todos-container__todo {
+  border: 1px solid black;
+  padding: 20px;
+  width: 100px;
+  margin: 20px;
+
+  &.done {
+    background-color: black;
+  }
+}
+
+.todo-form {
+  padding: 20px;
+  border: 1px solid plum;
+  margin: 0 auto;
+  width: 200px;
+  height: 300px;
+  justify-content: space-between;
+  flex-direction: column;
+  display: none;
+
+  &.visible {
+    display: flex;
+  }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo list</title>
+</head>
+<body>
+  <div class="container">
+    <div class="top"></div>
+    <div class="filter-options">
+      <input type="text" name="by-title" id="filter-by-title">
+      <label for="by-title"></label>
+      <select name="priority" id="filter-by-type">
+        <option value="open">Open</option>
+        <option value="done">Done</option>
+      </select>
+      <select name="priority" id="filter-by-priority">
+        <option value="normal">Normal</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+    <div class="todos-container">
+      <div class="todos-container__todo js-todo" id=1>
+        <span class="todo__title">test task</span>
+        <span class="todo__description">ciclum</span>
+        <span class="todo__priority"></span>
+        <div class="todo__action">...
+          <ul class="actions-container">
+            <li class="action" action="done">done</li>
+            <li class="action" action="edit">edit</li>
+            <li class="action" action="delete">delete</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <button class="js-create">create</button>
+
+    <form class="todo-form js-form">
+      <input type="text" id="title">
+      <label for="title">Title</label>
+      <input type="text" id="description">
+      <label for="description">Description</label>
+      <select name="priority" id="priority">
+        <option value="normal">Normal</option>
+        <option value="low">Low</option>
+      </select>
+      <div class="todo-from__actions">
+        <button class="js-cancel">Cancel</button>
+        <button class="js-submit" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
