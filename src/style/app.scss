@@ -1,29 +1,242 @@
+$blue: #223ca9;
+$light-blue: #2644c5;
+
+
+%box {
+  padding: 5px 20px;
+  border-radius: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  background-color: #f3f5f8;
+  font-family: 'Montserrat', sans-serif;
+}
+
+header, footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 30px;
+  height: 10%;
+  color: #bac3d0;
+  font-weight: bold;
+  background-color: #fff;
+}
+
+main {
+  height: 80%;
+  position: relative;
+}
+
+button {
+  @extend %box;
+  cursor: pointer;
+  color: #fff;
+  background: $blue;
+  border: none;
+}
+
+input, select, textarea {
+  border-radius: 7px;
+  padding: 5px 10px;
+  border: 1px solid #bac3d0;
+}
+
+select {
+  width: 100px;
+}
+
+.container {
+  max-width: 1170px;
+  margin: auto;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px 30px;
+  margin-bottom: 30px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 0 30px 0 #e4e7eb;
+}
+
+.filter-options > * {
+  margin-right: 20px;
+}
+
 .todos-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .todos-container__todo {
-  border: 1px solid black;
-  padding: 20px;
-  width: 100px;
-  margin: 20px;
+  position: relative;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 190px;
+  width: 190px;
+  padding: 30px 20px;
+  background: #fff;
+  box-shadow: 0 0 60px 0 #e4e7eb;
+  border-radius: 12px;
 
   &.done {
-    background-color: black;
+    background-color: #e3e8fb;
+  }
+}
+
+.todo__tick {
+  position: absolute;
+  padding: 5px;
+  color: $blue;
+  top: 0;
+  right: 0;
+  width: 23px;
+  height: 20px;
+  transform: translateY(-50%);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+
+  &.visible {
+    display: flex;
+  }
+}
+
+.todo__title {
+  font-weight: bold;
+}
+
+.todo__priority {
+  @extend %box;
+  width: fit-content;
+  background: #f2f4fb;
+  color: $blue;
+}
+
+.todo__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo__action {
+  @extend %box;
+  padding: 5px 10px;
+  position: relative;
+  box-shadow: 0 8px 26px 0 rgba(34,60,169,.31);
+  cursor: pointer;
+  background: $blue;
+  color: #fff;
+
+  &:hover {
+    background: $light-blue;
+  }
+}
+
+.actions-container {
+  z-index: 10;
+  display: none;
+  position: absolute;
+  left: 0;
+  padding: 0;
+  background: $blue;
+  list-style: none;
+
+  &:before {
+    z-index: -1;
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: $blue;
+    height: 20px;
+    width: 20px;
+    transform: rotate(45deg);
+    top: -3px;
+    left: 10px;
+  }
+
+  & > li {
+    padding: 7px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    
+    &:hover {
+      background: $light-blue;
+    }
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+
+  &.active {
+    display: block;
   }
 }
 
 .todo-form {
-  padding: 20px;
-  border: 1px solid plum;
-  margin: 0 auto;
-  width: 200px;
-  height: 300px;
+  z-index: 10;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  width: 250px;
   justify-content: space-between;
   flex-direction: column;
   display: none;
 
+  & > * {
+    margin-bottom: 30px;
+  }
+
+  & > div:last-child {
+    margin: 0;
+  }
+
   &.visible {
     display: flex;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+.form-priority {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-form__actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.background {
+  z-index: 1;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,.7);
+
+  &.active {
+    display: block;
   }
 }

@@ -1,30 +1,41 @@
 import {
-  form, title, description, priority, hideForm,
+  form, title, description, priority, hideForm, showForm,
 } from './form';
+import { getTodoHTML } from './templates';
 
 /* eslint-disable linebreak-style */
 (() => {
-  let todos = [
-    {
-      id: 1,
-      title: 'one',
-      description: 'opa',
-      done: false,
-    },
-  ];
+  let todos = [];
+
+  const renderTodos = (todos) => {
+    const filtereByDone = todos.sort((a, b) => {
+      if (a.done === b.done) return 0;
+      if (a.done) return 1;
+      return -1;
+    });
+
+    let result = '';
+    filtereByDone.forEach((todo) => {
+      const {
+        id, title, description, priority, done,
+      } = todo;
+      result += getTodoHTML({
+        id, title, description, priority, done,
+      });
+    });
+    const container = document.querySelector('.todos-container');
+    container.innerHTML = result;
+  };
 
   const updateTodoFields = (todo) => {
     const selectedTodoId = todo.getAttribute('id');
-    const todoToUpdateIdx = todos.findIndex((todo) => todo.id === selectedTodoId);
-    todos[todoToUpdateIdx] = {
-      id: selectedTodoId,
+    todos = todos.map((todo) => (todo.id === +selectedTodoId ? {
+      ...todo,
       title: title.value,
       description: description.value,
       priority: priority.value,
-    };
-    todo.querySelector('.todo__title').textContent = title.value;
-    todo.querySelector('.todo__description').textContent = description.value;
-    todo.querySelector('.todo__priority').textContent = priority.value;
+    } : todo));
+    renderTodos(todos);
   };
 
   const todoAdd = (e) => {
@@ -35,8 +46,8 @@ import {
       hideForm(e);
       return;
     }
-    if (title === '' || description === '' || priority === '') {
-      alert('All fields are required');
+    if (title.value === '' || priority.value === '') {
+      alert('Title and priority are required');
       e.preventDefault();
       return;
     }
@@ -50,22 +61,7 @@ import {
     };
     todos.push(todo);
 
-    const container = document.querySelector('.todos-container');
-    container.insertAdjacentHTML('beforeend', `
-      <div class="todos-container__todo js-todo" id=${todo.id}>
-        <span class="todo__title">${title.value}</span>
-        <span class="todo__description">${description.value}</span>
-        <span class="todo__priority">${priority.value}</span>
-        <div class="todo__action">...
-          <ul class="actions-container">
-            <li class="action" action="done">done</li>
-            <li class="action" action="edit">edit</li>
-            <li class="action" action="delete">delete</li>
-          </ul>
-        </div>
-      </div>
-    `);
-
+    renderTodos(todos);
     hideForm(e);
   };
 
@@ -75,7 +71,7 @@ import {
   };
 
   const todoEdit = (id) => {
-    form.classList.add('visible');
+    showForm();
     document.querySelector(`.js-todo[id="${id}"]`).classList.add('selected');
     const selectedTodo = todos.find((item) => item.id === id);
     title.value = selectedTodo.title;
@@ -86,51 +82,39 @@ import {
   const todoDone = (id) => {
     const idx = todos.findIndex((item) => item.id === id);
     todos[idx].done = !todos[idx].done;
-    todos.push(todos.splice(idx, 1)[0]);
-    document.querySelector(`.js-todo[id="${id}"]`).classList.toggle('done');
-  };
-
-  const renderTodos = (todos) => {
-    const container = document.querySelector('.todos-container');
-    let result = '';
-    todos.forEach((todo) => {
-      result += `
-      <div class="todos-container__todo js-todo" id=${todo.id}>
-        <span class="todo__title">${todo.title}</span>
-        <span class="todo__description">${todo.description}</span>
-        <span class="todo__priority">${todo.priority}</span>
-        <div class="todo__action">...
-          <ul class="actions-container">
-            <li class="action" action="done">done</li>
-            <li class="action" action="edit">edit</li>
-            <li class="action" action="delete">delete</li>
-          </ul>
-        </div>
-      </div>`;
-    });
-    container.innerHTML = result;
-  };
-
-  const filterByTitle = (title) => todos.filter((todo) => todo.title.includes(title.toLowerCase()));
-  const filterByActive = (active) => todos.filter((todo) => todo.done === (active === 'done'));
-  const filterByPriority = (priority) => todos.filter((todo) => todo.priority === priority);
-
-  const updateFilteredTodos = (valueName, value) => {
-    const todos = {
-      title: filterByTitle,
-      type: filterByActive,
-      priority: filterByPriority,
-    }[valueName](value);
     renderTodos(todos);
   };
 
-  document.querySelector('#filter-by-title').addEventListener('input', (e) => updateFilteredTodos('title', e.target.value));
-  document.querySelector('#filter-by-type').addEventListener('change', (e) => updateFilteredTodos('type', e.target.value));
-  document.querySelector('#filter-by-priority').addEventListener('change', (e) => updateFilteredTodos('priority', e.target.value));
+  const filterTitle = document.querySelector('#filter-by-title');
+  const filterType = document.querySelector('#filter-by-type');
+  const filterPriority = document.querySelector('#filter-by-priority');
 
-  document.addEventListener('click', (e) => {
+  const filterByTitle = (todo) => todo.title.includes(filterTitle.value.toLowerCase());
+  const filterByActive = (todo) => {
+    if (filterType.value === 'all') return true;
+    return todo.done === (filterType.value === 'done');
+  };
+  const filterByPriority = (todo) => {
+    if (filterPriority.value === 'all') return true;
+    return todo.priority === filterPriority.value;
+  };
+
+  const filterTodos = () => {
+    const result = todos
+      .filter(filterByTitle)
+      .filter(filterByActive)
+      .filter(filterByPriority);
+    renderTodos(result);
+  };
+
+  filterTitle.addEventListener('input', filterTodos);
+  filterType.addEventListener('change', filterTodos);
+  filterPriority.addEventListener('change', filterTodos);
+
+  document.querySelector('.todos-container').addEventListener('click', (e) => {
     const { target } = e;
     if (target.classList.contains('actions-container') || target.parentElement.classList.contains('actions-container')) {
+      target.closest('.actions-container').classList.remove('active');
       const action = target.getAttribute('action');
       const { id } = target.closest('.js-todo');
 
@@ -141,6 +125,10 @@ import {
         delete: todoDelete,
       })[action](+id)
       )();
+    }
+
+    if (target.classList.contains('js-action')) {
+      target.querySelector('.actions-container').classList.toggle('active');
     }
   });
 
