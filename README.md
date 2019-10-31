@@ -1,5 +1,5 @@
 Simple todo list.
-For creating todo press ```Create``` button and fill in the form. Note that title and priority are required. For saving todo press ```Save```.
+For creating todo press ```Create``` button and fill in the form. Note that title and priority fields are required. For saving todo press ```Save```.
 
 You can also search by title, filter todos by their status or priority.
 
