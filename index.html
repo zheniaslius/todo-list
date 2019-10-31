@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo list</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <header>
+    <span>TODOList</span>
+  </header>
+  <main>
+    <div class="container">
+      <div class="top">
+        <div class="filter-options">
+          <input type="text" name="by-title" id="filter-by-title" placeholder="search by title">
+          <select name="priority" id="filter-by-type">
+            <option value="all">all</option>
+            <option value="open">open</option>
+            <option value="done">done</option>
+          </select>
+          <select name="priority" id="filter-by-priority">
+            <option value="all">all</option>
+            <option value="normal">normal</option>
+            <option value="low">low</option>
+          </select>
+        </div>
+        <button class="js-create">Create</button>
+      </div>
+      <div class="todos-container"></div>
+
+    </div>
+    <div class="background"></div>
+    <form class="todo-form js-form">
+      <label for="title">
+        Title
+        <input type="text" id="title" placeholder="Title">
+      </label>
+      <label for="description">
+        Description
+        <textarea name="description" id="description" placeholder="Description"></textarea>
+      </label>
+      <div class="form-priority">
+        <span>Priority</span>
+        <select name="priority" id="priority">
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="todo-form__actions">
+        <button class="js-cancel">Cancel</button>
+        <button class="js-submit" type="submit">Submit</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="fullname">Yevhen Sliusarcuk</footer>
+<script type="text/javascript" src="bundle.js"></script></body>
+
+</html>
